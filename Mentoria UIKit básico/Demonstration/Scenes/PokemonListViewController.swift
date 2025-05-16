@@ -7,6 +7,7 @@ class PokemonListViewController: UIViewController, UITableViewDataSource, UITabl
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.separatorStyle = .none
         tableView.register(PokemonTableViewCell.self, forCellReuseIdentifier: "CustomCell")
         return tableView
     }()
