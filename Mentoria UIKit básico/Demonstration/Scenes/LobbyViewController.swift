@@ -51,7 +51,8 @@ class LobbyViewController: UIViewController {
     }
 
     @objc func goToPokemonDetail() {
-        navigationController?.pushViewController(PokemonDetailViewController(), animated: true)
+        let url = URL(string: "https://pokeapi.co/api/v2/pokemon/1/")
+        navigationController?.pushViewController(PokemonDetailViewController(url: url), animated: true)
     }
 }
 

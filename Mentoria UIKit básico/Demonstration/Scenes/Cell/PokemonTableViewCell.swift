@@ -17,6 +17,10 @@ class PokemonTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        customView.prepareForReuse()
+    }
+    
     private func setupCustomView() {
         contentView.addSubview(customView)
         NSLayoutConstraint.activate([

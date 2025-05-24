@@ -127,5 +127,18 @@ class PokemonDetailView: UIView {
             typeLabel.backgroundColor = primaryType.getColor()
             backgroundColor = primaryType.getColor()
         }
+        
+        if let imageUrl = URL(string: pokemonDetail.imageUrl) {
+            loadImage(from: imageUrl)
+        }
     }
+    
+    private func loadImage(from url: URL) {
+           URLSession.shared.dataTask(with: url) { data, _, _ in
+               guard let data, let image = UIImage(data: data) else { return }
+               DispatchQueue.main.async {
+                   self.imageView.image = image
+               }
+           }.resume()
+       }
 }

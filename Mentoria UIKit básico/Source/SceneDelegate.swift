@@ -13,15 +13,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-          guard let windowScene = (scene as? UIWindowScene) else { return }
-
-          let window = UIWindow(windowScene: windowScene)
-          let lobbyViewController = LobbyViewController()
-          let navigationController = UINavigationController(rootViewController: lobbyViewController)
-          window.rootViewController = navigationController
-          window.makeKeyAndVisible()
-          self.window = window
-      }
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        
+        let window = UIWindow(windowScene: windowScene)
+        let lobbyViewController = PokemonListViewController()
+        let navigationController = UINavigationController(rootViewController: lobbyViewController)
+        window.rootViewController = navigationController
+        window.makeKeyAndVisible()
+        self.window = window
+    }
 
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
