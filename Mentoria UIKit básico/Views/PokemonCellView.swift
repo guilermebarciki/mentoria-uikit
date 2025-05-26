@@ -82,14 +82,9 @@ class PokemonCellView: UIView {
     func configure(with pokemon: Pokemon) {
         nameLabel.text = pokemon.name
         numberLabel.text = String(format: "#%03d", pokemon.number)
-        
-        if let imageUrl = URL(string: pokemon.pokemonImage) {
-            pokemonImageView.loadImage(urlString: pokemon.pokemonImage)
-        }
+        pokemonImageView.loadImage(urlString: pokemon.pokemonImage)
     }
     
-    
-    // Mostrar depois isso
     func prepareForReuse() {
         pokemonImageView.image = nil
         nameLabel.text = nil
@@ -105,27 +100,3 @@ class PokemonCellView: UIView {
            }.resume()
        }
 }
-
-
-//private func loadImage(from url: URL) {
-//    imageTask?.cancel()
-//
-//    if let image = imageCache[url.absoluteString] {
-//        pokemonImageView.image = image
-//        return
-//    }
-//       imageTask = URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
-//           guard let self = self,
-//                 let data = data,
-//                 let image = UIImage(data: data) else { return }
-//
-//           DispatchQueue.main.async {
-//               imageCache[url.absoluteString] = image
-//               self.pokemonImageView.image = image
-//           }
-//       }
-//       imageTask?.resume()
-//   }
-//}
-//
-//var imageCache: [String: UIImage] = [:]
