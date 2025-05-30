@@ -16,6 +16,17 @@ final class PokemonService {
             }
         }
     }
+    
+    func fetchPokemonDetail(from url: URL, completion: @escaping (Result<PokemonDetail, Error>) -> Void) {
+        networkClient.fetch(from: url.absoluteString, decodeTo: PokemonDetailResponse.self) { result in
+              switch result {
+              case .success(let response):
+                  completion(.success(response.toDomainModel()))
+              case .failure(let error):
+                  completion(.failure(error))
+              }
+          }
+      }
 }
 
 // MARK: - ServiceError
