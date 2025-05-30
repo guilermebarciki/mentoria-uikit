@@ -1,35 +1,21 @@
 import Foundation
 
 final class PokemonService {
-    
+    let networkClient = NetworkClient()
+
     func fetchPokemonList(completion: @escaping (Result<[Pokemon], Error>) -> Void) {
         let urlString = "https://pokeapi.co/api/v2/pokemon?limit=151"
-        guard let url = URL(string: urlString) else {
-            completion(.failure(ServiceError.invalidURL))
-            return
-        }
-
-        URLSession.shared.dataTask(with: url) { data, _, error in
-            if let error {
-                completion(.failure(error))
-                return
-            }
-
-            guard let data else {
-                completion(.failure(ServiceError.emptyData))
-                return
-            }
-
-            do {
-                let decoded = try JSONDecoder().decode(PokemonListResponse.self, from: data)
-                let pokemons = decoded.results.map { $0.toDomainModel() }
+        
+        networkClient.fetch(from: urlString, decodeTo: PokemonListResponse.self) { result in
+            switch result {
+            case .success(let response):
+                let pokemons = response.results.map { $0.toDomainModel() }
                 completion(.success(pokemons))
-            } catch {
+            case .failure(let error):
                 completion(.failure(error))
             }
-        }.resume()
+        }
     }
-    
 }
 
 // MARK: - ServiceError
