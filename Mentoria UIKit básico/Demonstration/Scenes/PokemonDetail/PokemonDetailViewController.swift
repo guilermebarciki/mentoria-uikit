@@ -8,6 +8,7 @@ class PokemonDetailViewController: UIViewController, PokemonDetailViewModelDeleg
         self.viewModel = PokemonDetailViewModel(url: url)
         super.init(nibName: nil, bundle: nil)
         self.viewModel.delegate = self
+        self.pokemonDetailView.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -25,9 +26,9 @@ class PokemonDetailViewController: UIViewController, PokemonDetailViewModelDeleg
     
     // MARK: - PokemonDetailViewModelDelegate
     
-    func didLoadPokemonDetail(_ detail: PokemonDetail) {
+    func didLoadPokemonDetail(detail: PokemonDetail, isFavorited: Bool) {
         DispatchQueue.main.async {
-            self.pokemonDetailView.configure(with: detail)
+            self.pokemonDetailView.configure(with: detail, isFavorited: isFavorited)
         }
     }
     
@@ -43,5 +44,11 @@ extension UIViewController {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: buttonTitle, style: .default))
         present(alert, animated: true)
+    }
+}
+
+extension PokemonDetailViewController: PokemonDetailViewDelegate {
+    func didTapFavorite() {
+        viewModel.toggleFavorite()
     }
 }

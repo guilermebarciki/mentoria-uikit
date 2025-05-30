@@ -1,6 +1,26 @@
 import UIKit
 
+protocol PokemonDetailViewDelegate: AnyObject {
+    func didTapFavorite()
+}
+
 class PokemonDetailView: UIView {
+    weak var delegate: PokemonDetailViewDelegate?
+    
+    private lazy var favoriteButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "heart"), for: .normal)
+        button.tintColor = .systemRed
+        button.addTarget(self, action: #selector(favoriteTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private var isFavorited = false {
+        didSet {
+            let imageName = isFavorited ? "heart.fill" : "heart"
+            favoriteButton.setImage(UIImage(systemName: imageName), for: .normal)
+        }
+    }
     
     private let cardView: UIView = {
         let view = UIView()
@@ -75,7 +95,8 @@ class PokemonDetailView: UIView {
             imageView,
             nameLabel,
             typeLabel,
-            infoStackView
+            infoStackView,
+            favoriteButton
         ])
         stack.axis = .vertical
         stack.alignment = .center
@@ -116,7 +137,7 @@ class PokemonDetailView: UIView {
         ])
     }
     
-    func configure(with pokemonDetail: PokemonDetail) {
+    func configure(with pokemonDetail: PokemonDetail, isFavorited: Bool) {
         nameLabel.text = pokemonDetail.name
         imageView.image = UIImage(named: pokemonDetail.imageUrl)
         typeLabel.text = pokemonDetail.types.map { $0.getTitle() }.joined(separator: ", ")
@@ -128,17 +149,18 @@ class PokemonDetailView: UIView {
             backgroundColor = primaryType.getColor()
         }
         
-        if let imageUrl = URL(string: pokemonDetail.imageUrl) {
-            loadImage(from: imageUrl)
-        }
+        imageView.loadImage(urlString: pokemonDetail.imageUrl)
+        
+        configureButton(isFavorited: isFavorited)
     }
     
-    private func loadImage(from url: URL) {
-           URLSession.shared.dataTask(with: url) { data, _, _ in
-               guard let data, let image = UIImage(data: data) else { return }
-               DispatchQueue.main.async {
-                   self.imageView.image = image
-               }
-           }.resume()
-       }
+    private func configureButton(isFavorited: Bool) {
+        let imageName = isFavorited ? "heart.fill" : "heart"
+        favoriteButton.setImage(UIImage(systemName: imageName), for: .normal)
+    }
+    
+    @objc private func favoriteTapped() {
+        isFavorited.toggle()
+        delegate?.didTapFavorite()
+    }
 }
