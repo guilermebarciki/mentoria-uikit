@@ -50,7 +50,7 @@ extension PokemonListViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as? PokemonTableViewCell else {
             return UITableViewCell()
         }
-        let pokemon = viewModel.pokemon(at: indexPath.row)
+        let pokemon = viewModel.getPokemon(at: indexPath.row)
         cell.configure(with: pokemon)
         return cell
     }
@@ -60,7 +60,7 @@ extension PokemonListViewController: UITableViewDataSource {
 
 extension PokemonListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let pokemon = viewModel.pokemon(at: indexPath.row)
+        let pokemon = viewModel.getPokemon(at: indexPath.row)
         let detailVC = PokemonDetailViewController(url: pokemon.pokemonUrl)
         navigationController?.pushViewController(detailVC, animated: true)
     }

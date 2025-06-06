@@ -6,9 +6,13 @@ protocol PokemonListViewModelDelegate: AnyObject {
 class PokemonListViewModel {
     
     weak var delegate: PokemonListViewModelDelegate?
-    private let service = PokemonService()
+    private let service: PokemonServiceProtocol
     private(set) var pokemons: [Pokemon] = []
 
+    init(service: PokemonServiceProtocol = PokemonService()) {
+        self.service = service
+    }
+    
     func fetchPokemons() {
         service.fetchPokemonList { [weak self] result in
             switch result {
@@ -21,7 +25,7 @@ class PokemonListViewModel {
         }
     }
 
-    func pokemon(at index: Int) -> Pokemon {
+    func getPokemon(at index: Int) -> Pokemon {
         return pokemons[index]
     }
 

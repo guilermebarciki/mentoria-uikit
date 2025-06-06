@@ -1,6 +1,10 @@
 import Foundation
 
-final class PokemonService {
+protocol PokemonServiceProtocol {
+    func fetchPokemonList(completion: @escaping (Result<[Pokemon], Error>) -> Void)
+}
+
+final class PokemonService: PokemonServiceProtocol {
     let networkClient = NetworkClient()
 
     func fetchPokemonList(completion: @escaping (Result<[Pokemon], Error>) -> Void) {
