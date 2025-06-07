@@ -6,8 +6,12 @@ protocol PokemonServiceProtocol {
 }
 
 final class PokemonService: PokemonServiceProtocol {
-    let networkClient = NetworkClient()
+    let networkClient: NetworkClientProtocol
 
+    init(networkClient: NetworkClientProtocol = NetworkClient()) {
+        self.networkClient = networkClient
+    }
+    
     func fetchPokemonList(completion: @escaping (Result<[Pokemon], Error>) -> Void) {
         let urlString = "https://pokeapi.co/api/v2/pokemon?limit=151"
         

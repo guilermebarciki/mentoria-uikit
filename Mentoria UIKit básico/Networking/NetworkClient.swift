@@ -1,6 +1,10 @@
 import Foundation
 
-class NetworkClient {
+protocol NetworkClientProtocol {
+    func fetch<T: Decodable>(from urlString: String, decodeTo type: T.Type, completion: @escaping (Result<T, Error>) -> Void)
+}
+
+class NetworkClient: NetworkClientProtocol {
     
     func fetch<T: Decodable>(
         from urlString: String,
