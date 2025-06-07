@@ -5,12 +5,12 @@ import XCTest
 final class PokemonListViewModelTests: XCTestCase {
     private var sut: PokemonListViewModel!
     private var mockService: MockPokemonService!
-    private var mockDelegate: MockDelegate!
+    private var mockDelegate: MockPokemonListDelegate!
     
     override func setUp() {
         super.setUp()
         mockService = MockPokemonService()
-        mockDelegate = MockDelegate()
+        mockDelegate = MockPokemonListDelegate()
         sut = PokemonListViewModel(service: mockService)
         sut.delegate = mockDelegate
     }
