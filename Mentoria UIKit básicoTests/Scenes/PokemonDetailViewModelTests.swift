@@ -42,7 +42,7 @@ final class PokemonDetailViewModelTests: XCTestCase {
         // Arrange
         let expectedPokemon = createSamplePokemon()
         mockService.pokemonDetailResult = .success(expectedPokemon)
-        
+        mockRepository.containsToBeReturned = true
         // Act
         sut.fetchPokemonDetail()
         
@@ -51,7 +51,7 @@ final class PokemonDetailViewModelTests: XCTestCase {
         XCTAssertFalse(mockDelegate.didFailCalled)
         XCTAssertEqual(mockDelegate.loadedDetail?.name, "Bulbasaur")
         XCTAssertEqual(mockDelegate.loadedDetail?.id, 1)
-        XCTAssertFalse(mockDelegate.loadedIsFavorited ?? true)
+        XCTAssertTrue(mockDelegate.loadedIsFavorited)
     }
     
     func test_fetchPokemonDetail_whenResponseFails_shouldNotifyDelegateWithError() {
@@ -138,16 +138,15 @@ final class PokemonDetailViewModelTests: XCTestCase {
         // Primeiro carregamento - não favoritado
         mockRepository.containsToBeReturned = false
         sut.fetchPokemonDetail()
-        XCTAssertFalse(mockDelegate.loadedIsFavorited ?? true)
+        XCTAssertFalse(mockDelegate.loadedIsFavorited)
         
-        mockDelegate.reset()
         mockRepository.containsToBeReturned = true
         
         // Act - Carregar novamente
         sut.fetchPokemonDetail()
         
         // Assert
-        XCTAssertTrue(mockDelegate.loadedIsFavorited ?? false)
+        XCTAssertTrue(mockDelegate.loadedIsFavorited)
     }
     
     func test_fetchPokemonDetail_whenLoadingDifferentPokemons_shouldHandleFavoritesCorrectly() {
@@ -161,9 +160,8 @@ final class PokemonDetailViewModelTests: XCTestCase {
         sut.fetchPokemonDetail()
         
         XCTAssertEqual(mockDelegate.loadedDetail?.name, "Bulbasaur")
-        XCTAssertFalse(mockDelegate.loadedIsFavorited ?? true)
+        XCTAssertFalse(mockDelegate.loadedIsFavorited )
         
-        mockDelegate.reset()
         
         // Configurar para Pikachu
         mockService.pokemonDetailResult = .success(pikachu)
@@ -176,7 +174,7 @@ final class PokemonDetailViewModelTests: XCTestCase {
         // Assert
         XCTAssertEqual(mockDelegate.loadedDetail?.name, "Pikachu")
         XCTAssertEqual(mockDelegate.loadedDetail?.id, 25)
-        XCTAssertFalse(mockDelegate.loadedIsFavorited ?? true)
+        XCTAssertFalse(mockDelegate.loadedIsFavorited)
     }
     
     func createSamplePokemon(id: Int = 1, name: String = "Bulbasaur") -> PokemonDetail {
