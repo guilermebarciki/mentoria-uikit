@@ -1,3 +1,5 @@
+import Foundation
+
 protocol FavoritePokemonRepositoryProtocol {
     func add(_ name: String)
     func remove(_ name: String)
@@ -28,3 +30,4 @@ final class FavoritePokemonLocalRepository: FavoritePokemonRepositoryProtocol {
         Array(favorites)
     }
 }
+

@@ -16,7 +16,7 @@ final class PokemonDetailViewModel {
     init(
         url: URL?,
         service: PokemonServiceProtocol = PokemonService(),
-        repository: FavoritePokemonRepositoryProtocol = FavoritePokemonLocalRepository.shared
+        repository: FavoritePokemonRepositoryProtocol = FavoritePokemonUserDefaultsRepository.shared
     ) {
         self.url = url
         self.service = service

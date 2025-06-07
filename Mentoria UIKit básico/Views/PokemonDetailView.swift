@@ -155,8 +155,7 @@ class PokemonDetailView: UIView {
     }
     
     private func configureButton(isFavorited: Bool) {
-        let imageName = isFavorited ? "heart.fill" : "heart"
-        favoriteButton.setImage(UIImage(systemName: imageName), for: .normal)
+        self.isFavorited = isFavorited
     }
     
     @objc private func favoriteTapped() {
